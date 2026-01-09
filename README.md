@@ -1,9 +1,15 @@
-# R2Boilerplate
+# StrangeDrifter
 
-This repository contains a sample mod for Risk of Rain 2.
+Makes the unused strange scrap work with Drifter's passive.
 
-You can clone this repository, open the visual studio solution file and compile it immediately.
+## This mod is made to be used with any mod that reimplements the unused [Void Eradicator/Suppressor](https://riskofrain2.wiki.gg/wiki/Void_Eradicator) or [Strange Scrap](https://riskofrain2.wiki.gg/wiki/Strange_Scrap)
+Recommended mods for adding the Void Eradicator:
+<br>[Suppression](https://thunderstore.io/package/acanthic/Suppression/)
+with [VoidCoinUtils](https://thunderstore.io/package/acanthic/VoidCoinUtils/)
+<br>[SuppressorInBazaar](https://thunderstore.io/package/TheBugReport/SuppressorInBazaar/)
 
-This repository is meant to represent best practices for starting a simple mod.
-
-Once your mod get compiled, you can utilize the Thunderstore folder for later uploading it to https://thunderstore.io/c/riskofrain2/
+## Credits
+- Chutoy - Coding, Idea, Icon
+- Flowyan - Coding
+- Lukas - Drifter and Drifter Soyjaks
+- bbborbo's [GreenAlienHead](https://github.com/bbborbo/GreenAlienHead/tree/master) for being a good learning and reference piece
