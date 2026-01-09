@@ -2,6 +2,7 @@ using BepInEx;
 using R2API;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 using DrifterTrashToTreasureController = On.RoR2.DrifterTrashToTreasureController;
 using SteamUserManager = IL.RoR2.SteamUserManager;
 
@@ -19,29 +20,66 @@ namespace StrangeDrifter
         private ItemTier greenTier = ItemTier.Tier2;
         private ItemTier redTier = ItemTier.Tier3;
 
+        private void ApplyTrashStats(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (!body.inventory)
+                return;
+
+            var strangeWhiteScrapCount = body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed);
+            var statsFromScrapCount = body.inventory.GetItemCountEffective(DLC3Content.Items.StatsFromScrap);
+
+            if (strangeWhiteScrapCount <= 0 || statsFromScrapCount <= 0)
+                return;
+
+            var bonus = 0.06f * strangeWhiteScrapCount * statsFromScrapCount;
+
+            args.moveSpeedMultAdd += bonus;
+        }
+
+
         public void Awake()
         {
-            var whitescrapstrange = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapWhiteSuppressed));
-            if (whitescrapstrange)
+            var strangeWhiteScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapWhiteSuppressed));
+            var strangeGreenScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapGreenSuppressed));
+            var strangeRedScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapRedSuppressed));
+            if (strangeWhiteScrap)
             {
-                whitescrapstrange.tier = whiteTier;
-                whitescrapstrange.deprecatedTier = whiteTier;
+                strangeWhiteScrap.tier = whiteTier;
+                strangeWhiteScrap.deprecatedTier = whiteTier;
             }
+
+            if (strangeGreenScrap)
+            {
+                strangeGreenScrap.tier = greenTier;
+                strangeGreenScrap.deprecatedTier = greenTier;
+            }
+
+            if (strangeRedScrap)
+            {
+                strangeRedScrap.tier = redTier;
+                strangeRedScrap.deprecatedTier = redTier;
+            }
+
+            RecalculateStatsAPI.GetStatCoefficients += ApplyTrashStats;
 
             DrifterTrashToTreasureController.UpdateBuffCounts += (orig, self) =>
             {
                 orig(self);
-                var body = self.body;
-                body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureWhite.buffIndex, body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapWhite) + body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed));
-                RecalculateStatsAPI.GetStatCoefficients += (sender, args) =>
-                {
-                    if (sender.bodyIndex != body.bodyIndex) return;
-                    int whiteCount = body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed);
-                    int statsFromScrapCount = body.inventory.GetItemCountEffective(DLC3Content.Items.StatsFromScrap);
 
-                    // num98 += (float)(num61 * num62) * 0.06f;
-                    args.baseMoveSpeedAdd += statsFromScrapCount * whiteCount * 0.06f;
-                };
+                if (!NetworkServer.active)
+                    return;
+
+                var body = self.body;
+                if (!body || !body.inventory)
+                    return;
+
+                var count =
+                    body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapWhite) +
+                    body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed);
+
+                body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureWhite.buffIndex, count);
+
+                body.RecalculateStats();
             };
         }
 
