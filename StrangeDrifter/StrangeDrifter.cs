@@ -15,29 +15,16 @@ public class StrangeDrifter : BaseUnityPlugin
     public const string PluginName = "StrangeDrifter";
     public const string PluginVersion = "1.0.0";
 
-    private ItemTier whiteTier = ItemTier.Tier1;
-    private ItemTier greenTier = ItemTier.Tier2;
-    private ItemTier redTier = ItemTier.Tier3;
+    private const ItemTier whiteTier = ItemTier.Tier1;
+    private const ItemTier greenTier = ItemTier.Tier2;
+    private const ItemTier redTier = ItemTier.Tier3;
 
-    private void ApplyTrashStats(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
-    {
-        if (!body.inventory)
-            return;
 
-        var strangeWhiteScrapCount = body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed);
-        var statsFromScrapCount = body.inventory.GetItemCountEffective(DLC3Content.Items.StatsFromScrap);
-
-        if (strangeWhiteScrapCount <= 0 || statsFromScrapCount <= 0)
-            return;
-
-        var bonus = 0.06f * strangeWhiteScrapCount * statsFromScrapCount;
-
-        args.moveSpeedMultAdd += bonus;
-    }
 
 
     public void Awake()
     {
+        // Replace suppressed scrap tiers to match normal scrap tiers
         var strangeWhiteScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapWhiteSuppressed));
         var strangeGreenScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapGreenSuppressed));
         var strangeRedScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapRedSuppressed));
@@ -59,8 +46,10 @@ public class StrangeDrifter : BaseUnityPlugin
             strangeRedScrap.deprecatedTier = redTier;
         }
 
-        RecalculateStatsAPI.GetStatCoefficients += ApplyTrashStats;
+        // Replace Drifter Recycle Tooltip
+        // TODO: YOUR TURN BUDDY!
 
+        RecalculateStatsAPI.GetStatCoefficients += Stats.ApplyTrashStats;
         DrifterTrashToTreasureController.UpdateBuffCounts += (orig, self) =>
         {
             orig(self);
