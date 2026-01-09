@@ -46,10 +46,11 @@ public class StrangeDrifter : BaseUnityPlugin
             strangeRedScrap.deprecatedTier = redTier;
         }
 
-        // Replace Drifter Recycle Tooltip
-        // TODO: YOUR TURN BUDDY!
+        // COMMENTED OUT BECAUSE WE HAVENT DONE CUSTOM BUFFS FOR STRANGE SCRAP YET (WILL BE ADDED AS CONFIG LATER)
+        //LanguageAPI.Add("DRIFTER_RECYCLE_TOOLTIP",
+            //$"poopen fartern shitten<style=cKeywordName>Recycle</style><style=cSub>Gain unique stats from each Item Scrap tier:\r\nCommon - <style=cIsUtility>+6% move speed</style> <style=cStack>(per stack)</style>.\r\nUncommon - <style=cIsHealing>+3 hp/s base health regeneration</style> <style=cStack>(per stack)</style>.\r\nLegendary - <style=cIsDamage>+30% attack speed</style> <style=cStack>(per stack)</style>.\r\nBoss - <style=cIsUtility>-15% skill cooldowns</style> <style=cStack>(per stack)</style>.</style>");
 
-        RecalculateStatsAPI.GetStatCoefficients += Stats.ApplyTrashStats;
+        RecalculateStatsAPI.GetStatCoefficients += Stats.ApplyStrangeScrapStats;
         DrifterTrashToTreasureController.UpdateBuffCounts += (orig, self) =>
         {
             orig(self);
@@ -60,13 +61,26 @@ public class StrangeDrifter : BaseUnityPlugin
             var body = self.body;
             if (!body || !body.inventory)
                 return;
-
-            var count =
+            //white scrap buff
+            var whiteCount =
                 body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapWhite) +
                 body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapWhiteSuppressed);
 
-            body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureWhite.buffIndex, count);
-
+            body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureWhite.buffIndex, whiteCount);
+            //green scrap buff
+            var greenCount =
+                body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapGreen) +
+                body.inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrap) +
+                body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapGreenSuppressed);
+            
+            body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureGreen.buffIndex, greenCount);
+            //red scrap buff
+            var redCount =
+                body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapRed) +
+                body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapRedSuppressed);
+            
+            body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureRed.buffIndex, redCount);
+            
             body.RecalculateStats();
         };
     }
@@ -76,7 +90,7 @@ public class StrangeDrifter : BaseUnityPlugin
         if (Input.GetKeyDown(KeyCode.F1))
         {
             var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(DLC1Content.Items.ScrapWhiteSuppressed.itemIndex), transform.position, transform.up * 10f);
+            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(DLC1Content.Items.ScrapRedSuppressed.itemIndex), transform.position, transform.up * 10f);
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
@@ -88,7 +102,7 @@ public class StrangeDrifter : BaseUnityPlugin
         if (Input.GetKeyDown(KeyCode.F3))
         {
             var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapGreen.itemIndex), transform.position, transform.up * 10f);
+            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapRed.itemIndex), transform.position, transform.up * 10f);
         }
     }
 }
