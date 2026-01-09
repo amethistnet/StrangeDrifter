@@ -28,6 +28,8 @@ public class StrangeDrifter : BaseUnityPlugin
         var strangeWhiteScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapWhiteSuppressed));
         var strangeGreenScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapGreenSuppressed));
         var strangeRedScrap = LegacyResourcesAPI.Load<ItemDef>("ItemDefs/" + nameof(DLC1Content.Items.ScrapRedSuppressed));
+
+        // The deprecated tier is required because bad code lol
         if (strangeWhiteScrap)
         {
             strangeWhiteScrap.tier = whiteTier;
@@ -85,24 +87,25 @@ public class StrangeDrifter : BaseUnityPlugin
         };
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(DLC1Content.Items.ScrapRedSuppressed.itemIndex), transform.position, transform.up * 10f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapWhite.itemIndex), transform.position, transform.up * 10f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapRed.itemIndex), transform.position, transform.up * 10f);
-        }
-    }
+    // Uncomment for testing scrap drops
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.F1))
+    //     {
+    //         var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
+    //         PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(DLC1Content.Items.ScrapRedSuppressed.itemIndex), transform.position, transform.up * 10f);
+    //     }
+    //
+    //     if (Input.GetKeyDown(KeyCode.F2))
+    //     {
+    //         var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
+    //         PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapWhite.itemIndex), transform.position, transform.up * 10f);
+    //     }
+    //
+    //     if (Input.GetKeyDown(KeyCode.F3))
+    //     {
+    //         var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
+    //         PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.Items.ScrapRed.itemIndex), transform.position, transform.up * 10f);
+    //     }
+    // }
 }
