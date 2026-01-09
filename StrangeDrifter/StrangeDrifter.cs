@@ -19,9 +19,6 @@ public class StrangeDrifter : BaseUnityPlugin
     private const ItemTier greenTier = ItemTier.Tier2;
     private const ItemTier redTier = ItemTier.Tier3;
 
-
-
-
     public void Awake()
     {
         // Replace suppressed scrap tiers to match normal scrap tiers
@@ -50,7 +47,7 @@ public class StrangeDrifter : BaseUnityPlugin
 
         // COMMENTED OUT BECAUSE WE HAVENT DONE CUSTOM BUFFS FOR STRANGE SCRAP YET (WILL BE ADDED AS CONFIG LATER)
         //LanguageAPI.Add("DRIFTER_RECYCLE_TOOLTIP",
-            //$"poopen fartern shitten<style=cKeywordName>Recycle</style><style=cSub>Gain unique stats from each Item Scrap tier:\r\nCommon - <style=cIsUtility>+6% move speed</style> <style=cStack>(per stack)</style>.\r\nUncommon - <style=cIsHealing>+3 hp/s base health regeneration</style> <style=cStack>(per stack)</style>.\r\nLegendary - <style=cIsDamage>+30% attack speed</style> <style=cStack>(per stack)</style>.\r\nBoss - <style=cIsUtility>-15% skill cooldowns</style> <style=cStack>(per stack)</style>.</style>");
+        //$"poopen fartern shitten<style=cKeywordName>Recycle</style><style=cSub>Gain unique stats from each Item Scrap tier:\r\nCommon - <style=cIsUtility>+6% move speed</style> <style=cStack>(per stack)</style>.\r\nUncommon - <style=cIsHealing>+3 hp/s base health regeneration</style> <style=cStack>(per stack)</style>.\r\nLegendary - <style=cIsDamage>+30% attack speed</style> <style=cStack>(per stack)</style>.\r\nBoss - <style=cIsUtility>-15% skill cooldowns</style> <style=cStack>(per stack)</style>.</style>");
 
         RecalculateStatsAPI.GetStatCoefficients += Stats.ApplyStrangeScrapStats;
         DrifterTrashToTreasureController.UpdateBuffCounts += (orig, self) =>
@@ -74,15 +71,15 @@ public class StrangeDrifter : BaseUnityPlugin
                 body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapGreen) +
                 body.inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrap) +
                 body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapGreenSuppressed);
-            
+
             body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureGreen.buffIndex, greenCount);
             //red scrap buff
             var redCount =
                 body.inventory.GetItemCountEffective(RoR2Content.Items.ScrapRed) +
                 body.inventory.GetItemCountEffective(DLC1Content.Items.ScrapRedSuppressed);
-            
+
             body.SetBuffCount(DLC3Content.Buffs.TrashToTreasureRed.buffIndex, redCount);
-            
+
             body.RecalculateStats();
         };
     }
