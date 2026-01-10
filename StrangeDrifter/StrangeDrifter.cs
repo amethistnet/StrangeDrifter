@@ -11,7 +11,7 @@ namespace StrangeDrifter;
 public class StrangeDrifter : BaseUnityPlugin
 {
     public const string PluginGUID = PluginAuthor + "." + PluginName;
-    public const string PluginAuthor = "BismuthWin";
+    public const string PluginAuthor = "Bismuth";
     public const string PluginName = "StrangeDrifter";
     public const string PluginVersion = "1.0.0";
 
