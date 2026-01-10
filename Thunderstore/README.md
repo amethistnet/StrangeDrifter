@@ -6,7 +6,7 @@ Makes the unused strange scrap work with Drifter's passive.
 Recommended mods for adding the Void Eradicator:
 <br>[Suppression](https://thunderstore.io/package/acanthic/Suppression/)
 with [VoidCoinUtils](https://thunderstore.io/package/acanthic/VoidCoinUtils/)
-<br>[SuppressorInBazaar](https://thunderstore.io/package/TheBugReport/SuppressorInBazaar/)
+<br>ReleasedFromTheVoid by Anreol would be here but it hasn't been updated in a very long time...
 
 ## Credits
 - [Chutoy](https://basil.florist/) - Coding, Idea, Icon
