@@ -15,3 +15,6 @@ with [VoidCoinUtils](https://thunderstore.io/package/acanthic/VoidCoinUtils/)
 - [Lambda](https://jonstu.dev/) - The Host of Several Soyjak Industry Conferences and Presentations
 - Ajay - Played Yakuza Kiwami 2 in the background while the mod was being made
 - bbborbo's [GreenAlienHead](https://github.com/bbborbo/GreenAlienHead/tree/master) for being a good learning and reference piece
+
+## Future Plans
+Add config option for custom buffs from Strange Scrap to make eradicating items more appealing to Drifter.
