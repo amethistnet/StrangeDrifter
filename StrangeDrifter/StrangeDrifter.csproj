@@ -25,4 +25,9 @@
 		<PackageReference Include="MMHOOK.RoR2" Version="2025.12.9" NoWarn="NU1701" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EmbeddedResource Include="strangebuff" />
+	  <None Remove="strangebuff" />
+	</ItemGroup>
+
 </Project>
